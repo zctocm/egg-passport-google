@@ -5,5 +5,7 @@ module.exports = app => {
     this.body = 'hi, ' + app.plugins.passportGoogle.name;
   });
 
-  app.passport.mount('google');
+  const googleAuth = app.passport.authenticate('google', { scope: ['profile'] })
+  app.get('/passport/google', googleAuth);
+  app.get('/passport/google/callback', googleAuth)
 };
