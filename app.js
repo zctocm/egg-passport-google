@@ -11,7 +11,7 @@ module.exports = app => {
   assert(config.secret, '[egg-passport-google] config.passportGoogle.secret required');
   config.clientID = config.key;
   config.clientSecret = config.secret;
-  console.log(config)
+
   // must require `req` params
   app.passport.use('google', new Strategy(config, (req, accessToken, refreshToken, params, profile, done) => {
     // format user
