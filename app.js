@@ -4,8 +4,7 @@ const debug = require('debug')('egg-passport-google');
 const assert = require('assert');
 const Strategy = require('passport-google-oauth20').Strategy;
 
-module.exports = app => {
-  const config = app.config.passportGoogle;
+function mount(config, app) {
   config.passReqToCallback = true;
   assert(config.key, '[egg-passport-google] config.passportGoogle.key required');
   assert(config.secret, '[egg-passport-google] config.passportGoogle.secret required');
@@ -33,4 +32,16 @@ module.exports = app => {
     // let passport do verify and call verify hook
     app.passport.doVerify(req, user, done);
   }));
+}
+
+module.exports = app => {
+  const config = app.config.passportGoogle;
+  if (config.clients) {
+    for (const client in config.clients) {
+      const configItem = config.clients[client];
+      mount(configItem, app);
+    }
+  } else {
+    mount(config, app);
+  }
 };
